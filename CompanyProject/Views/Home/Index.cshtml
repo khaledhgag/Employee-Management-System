@@ -1,0 +1,244 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    body {
+        background: linear-gradient(45deg, #007bff, #28a745, #f4f7fa, #ff6f61);
+        background-size: 400%;
+        animation: gradientAnimation 15s ease infinite;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+    }
+
+
+    .container {
+        padding: 50px 0;
+    }
+
+    .hero-section {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: #ff5733; /* Orange accent */
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        animation: typing 4s steps(30, end) forwards;
+    }
+
+
+
+    .card {
+        width: 18rem;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+
+        .card:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+        }
+
+    .card-body {
+        padding: 30px;
+        text-align: center;
+        background: linear-gradient(135deg, #f7f9fc, #e8ecef);
+    }
+
+    .card-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-icon {
+        transform: scale(1.2);
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #006d77; /* Teal accent */
+    }
+
+    .card-text {
+        color: #555;
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-custom {
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-employee {
+        background-color: #ff5733;
+        border-color: #ff5733;
+        color: #fff;
+    }
+
+        .btn-employee:hover {
+            background-color: #c70039;
+            border-color: #c70039;
+            transform: scale(1.1);
+        }
+
+    .btn-department {
+        background-color: #006d77;
+        border-color: #006d77;
+        color: #fff;
+    }
+
+        .btn-department:hover {
+            background-color: #004d55;
+            border-color: #004d55;
+            transform: scale(1.1);
+        }
+
+    /* Theme Toggle */
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #ff5733;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+
+        .theme-toggle:hover {
+            background-color: #c70039;
+        }
+
+    body.dark-mode {
+        background: linear-gradient(45deg, #1e90ff, #218838, #333, #ff6f61);
+        color: #f4f7fa;
+    }
+
+        body.dark-mode .card {
+            background-color: #2c2c2c;
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .card-body {
+            background: linear-gradient(135deg, #333, #444);
+        }
+
+        body.dark-mode .card-title {
+            color: #83c5be; /* Lighter teal for dark mode */
+        }
+
+        body.dark-mode .card-text {
+            color: #bbb;
+        }
+
+        body.dark-mode .hero-title {
+            color: #ff8c66; /* Lighter orange for dark mode */
+        }
+</style>
+
+<!-- Particles.js Background -->
+<div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon" style="color: #fff;"></i>
+</button>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1 class="hero-title">Company</h1>
+    <!-- Lottie Animation -->
+    <div class="text-center mt-4">
+        <lottie-player src="https://assets.lottiefiles.com/packages/lf20_kgy7tl6z.json" background="transparent" speed="1" style="width: 250px; height: 250px; margin: 0 auto;" loop autoplay></lottie-player>
+        <div id="lottieFallback" style="display: none; color: #555;">Animation failed to load</div>
+    </div>
+</div>
+
+<!-- Cards Section -->
+<div class="container d-flex justify-content-center align-items-center flex-wrap gap-4">
+    <!-- Employee Card -->
+    <div class="card">
+        <div class="card-body">
+            <i class="fas fa-user-tie card-icon" style="color: #ff5733;"></i>
+            <h5 class="card-title">Manage Employees</h5>
+            <p class="card-text">Add, edit, and view employee details.</p>
+            <a asp-controller="Employee" asp-action="Index" class="btn btn-custom btn-employee">Go to Employees</a>
+        </div>
+    </div>
+
+    <!-- Department Card -->
+    <div class="card">
+        <div class="card-body">
+            <i class="fas fa-building card-icon" style="color: #006d77;"></i>
+            <h5 class="card-title">Manage Departments</h5>
+            <p class="card-text">Organize and manage departments efficiently.</p>
+            <a asp-controller="Department" asp-action="Index" class="btn btn-custom btn-department">Go to Departments</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
+    <!-- Sound Effect -->
+    <script>
+        const clickSound = new Audio("https://www.soundjay.com/buttons/button-09.mp3");
+
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#007bff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5 },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: {
+                events: { onhover: { enable: true, mode: "repulse" } }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const lottiePlayer = document.querySelector("lottie-player");
+            if (!lottiePlayer) {
+                document.getElementById("lottieFallback").style.display = "block";
+            }
+        });
+
+        // Theme Toggle
+        document.getElementById("themeToggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+            const icon = this.querySelector("i");
+            icon.classList.toggle("fa-moon");
+            icon.classList.toggle("fa-sun");
+            clickSound.play();
+        });
+
+        // Button Click Sound
+        document.querySelectorAll(".btn-custom").forEach(button => {
+            button.addEventListener("click", () => {
+                clickSound.play();
+            });
+        });
+    </script>
+}

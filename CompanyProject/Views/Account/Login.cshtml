@@ -1,0 +1,370 @@
+﻿@using Company.DAL.Entites
+@model Account
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    body {
+        background: linear-gradient(45deg, #007bff, #28a745, #f4f7fa, #ff6f61);
+        background-size: 400%;
+        animation: gradientAnimation 15s ease infinite;
+        font-family: 'Arial', sans-serif;
+    }
+
+   
+
+    .container {
+        margin-top: 50px;
+    }
+
+    /* Card design with parallax */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+        transition: transform 0.5s ease, box-shadow 0.3s ease-in-out;
+    }
+
+        .card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(0deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-header {
+        background-color: #007bff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            color: #fff;
+        }
+
+    .card-body {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 20px;
+        border: 1px solid #ced4da;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+    /* Button styling with animation */
+    .btn {
+        font-size: 1rem;
+        padding: 12px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+            transform: scale(1.05);
+        }
+
+    .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+        transition: transform 0.3s ease;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+    .btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+    .text-center p {
+        color: #555;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+    }
+
+        .text-danger.small {
+            font-size: 0.75rem;
+        }
+
+    /* Password toggle icon */
+    .position-relative {
+        position: relative;
+    }
+
+    #togglePasswordIcon {
+        color: #555;
+        transition: color 0.3s ease;
+        top: 38px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+        #togglePasswordIcon:hover {
+            color: #007bff;
+        }
+
+    /* Spinner for button */
+    .spinner-border {
+        width: 1rem;
+        height: 1rem;
+        vertical-align: middle;
+    }
+
+    /* Typing effect for header */
+    .typing-effect {
+        overflow: hidden;
+        white-space: nowrap;
+        animation: typing 3s steps(20, end) forwards;
+    }
+
+
+
+    /* Forgot password link */
+    .text-primary {
+        transition: color 0.3s ease;
+    }
+
+        .text-primary:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+    /* Dark mode */
+    body.dark-mode {
+        background: linear-gradient(45deg, #1e90ff, #218838, #333, #ff6f61);
+        background-size: 400%;
+        animation: gradientAnimation 15s ease infinite;
+        color: #f4f7fa;
+    }
+
+        body.dark-mode .card {
+            background-color: #2c2c2c;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .card-header {
+            background-color: #1e90ff;
+        }
+
+        body.dark-mode .form-control {
+            background-color: #333;
+            color: #fff;
+            border-color: #555;
+        }
+
+        body.dark-mode .form-label {
+            color: #ddd;
+        }
+
+    /* Toast for success */
+    .position-fixed.bg-success {
+        opacity: 0.9;
+        transition: opacity 0.5s ease;
+    }
+</style>
+
+<!-- Particles.js Background -->
+<div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+
+<!-- Theme Toggle Button -->
+<div class="position-fixed top-0 end-0 p-3">
+    <button class="btn btn-outline-secondary" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+</div>
+
+
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-primary text-white rounded-top-4">
+                <h3 class="mb-0 text-center typing-effect">
+                    <i class="fas fa-sign-in-alt me-2"></i>Welcome Back
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <!-- Lottie Animation -->
+                <div class="text-center mb-4">
+                    <lottie-player src="https://assets.lottiefiles.com/packages/lf20_jcikwtow.json" background="transparent" speed="1" style="width: 200px; height: 200px;" loop autoplay></lottie-player>
+                </div>
+
+                <form asp-action="Login" method="post" novalidate>
+                    <div class="mb-3 form-floating">
+                        <input asp-for="Email" class="form-control rounded-3" id="email" placeholder="example@example.com" />
+                        <label for="email" class="form-label">Email Address</label>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3 form-floating position-relative">
+                        <input asp-for="Password" class="form-control rounded-3" type="password" id="password" placeholder="********" />
+                        <label for="password" class="form-label">Password</label>
+                        <i class="fas fa-eye position-absolute" id="togglePasswordIcon" onclick="togglePassword()"></i>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+               
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success rounded-3 fw-bold" id="loginButton">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                            <span class="spinner-border spinner-border-sm d-none" id="loginSpinner" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <!-- Social Login Buttons -->
+                    <div class="text-center mt-3">
+                        <p class="mb-2">Or login with</p>
+                        <button type="button" class="btn btn-outline-danger me-2" onclick="socialLogin('google')">
+                            <i class="fab fa-google me-1"></i> Google
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" onclick="socialLogin('facebook')">
+                            <i class="fab fa-facebook-f me-1"></i> Facebook
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4" />
+
+                <div class="text-center">
+                    <p class="mb-0">Don't have an account?</p>
+                    <a asp-controller="Account" asp-action="Create" class="btn btn-outline-primary mt-2 fw-bold">
+                        <i class="fas fa-user-plus me-1"></i> Register Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- Sound Effect (Optional) -->
+    <script>
+        const clickSound = new Audio("https://www.soundjay.com/buttons/button-09.mp3");
+
+        // Particles.js Configuration
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#007bff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5 },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: {
+                events: { onhover: { enable: true, mode: "repulse" } }
+            }
+        });
+
+        // Login Error Alert
+        @if (ViewBag.LoginError != null)
+        {
+            <text>
+                    alert("@ViewBag.LoginError");
+            </text>
+        }
+
+        // Login Success Toast
+        @if (ViewBag.LoginSuccess != null)
+        {
+            <text>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const toast = document.createElement("div");
+                        toast.className = "position-fixed top-0 end-0 p-3 bg-success text-white rounded-3";
+                        toast.style.zIndex = "1000";
+                        toast.innerText = "@ViewBag.LoginSuccess";
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 3000);
+                    });
+            </text>
+        }
+
+        // Password Toggle
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const toggleIcon = document.getElementById("togglePasswordIcon");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+
+        // Form Submission Loading State
+        document.querySelector("form").addEventListener("submit", function () {
+            const button = document.getElementById("loginButton");
+            const spinner = document.getElementById("loginSpinner");
+            button.disabled = true;
+            spinner.classList.remove("d-none");
+            clickSound.play();
+        });
+
+        // Theme Toggle
+        document.getElementById("themeToggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+            const icon = this.querySelector("i");
+            icon.classList.toggle("fa-moon");
+            icon.classList.toggle("fa-sun");
+            clickSound.play();
+        });
+
+        // Language Switching
+  
+
+        // Social Login (Placeholder)
+        function socialLogin(provider) {
+            alert(`Login with ${provider} is not implemented yet.`);
+            clickSound.play();
+        }
+    </script>
+}
